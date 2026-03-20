@@ -20,6 +20,14 @@
 <body>
 
 <!-- ══════════════════════════════════════════════════
+     STICKY MOBILE DONATE BAR
+══════════════════════════════════════════════════ -->
+<div class="sticky-donate" id="sticky-donate">
+  <span>Support Nigerian students and communities</span>
+  <a href="#give" class="sticky-donate-btn">Donate Now</a>
+</div>
+
+<!-- ══════════════════════════════════════════════════
      NAV
 ══════════════════════════════════════════════════ -->
 <nav id="main-nav">
@@ -35,13 +43,13 @@
     <ul class="nav-links">
       <li><a href="#about">About</a></li>
       <li><a href="#programs">Programs</a></li>
-      <li><a href="#impact">Impact</a></li>
+      <li><a href="#story">Impact</a></li>
       <li><a href="#scholarship">Apply</a></li>
       <li><a href="#faq">FAQ</a></li>
     </ul>
 
     <div class="nav-cta">
-      <a href="#donate" class="nav-donate">Donate Now</a>
+      <a href="#give" class="nav-donate">Donate Now</a>
     </div>
 
     <button class="nav-hamburger" id="hamburger" aria-label="Open menu">
@@ -55,10 +63,10 @@
   <button class="mobile-close" id="mobile-close" aria-label="Close menu">&times;</button>
   <a href="#about"       onclick="closeMobileMenu()">About</a>
   <a href="#programs"    onclick="closeMobileMenu()">Programs</a>
-  <a href="#impact"      onclick="closeMobileMenu()">Impact</a>
+  <a href="#story"       onclick="closeMobileMenu()">Impact</a>
   <a href="#scholarship" onclick="closeMobileMenu()">Apply</a>
   <a href="#faq"         onclick="closeMobileMenu()">FAQ</a>
-  <a href="#donate" class="btn-gold btn" onclick="closeMobileMenu()">Donate Now</a>
+  <a href="#give" class="btn-gold btn" onclick="closeMobileMenu()">Donate Now</a>
 </div>
 
 <!-- ══════════════════════════════════════════════════
@@ -69,33 +77,78 @@
   <div class="hero-overlay"></div>
 
   <div class="hero-content">
-    <div class="hero-eyebrow reveal">501(c)(3) Nonprofit — Nigeria</div>
+    <div class="hero-eyebrow reveal">501(c)(3) Nonprofit · Serving Nigeria</div>
+
     <h1 class="reveal reveal-delay-1">
-      Every Child<br /><em>Deserves a Future.</em>
+      She Had the Grades.<br />
+      <em>Just Not the Money.</em>
     </h1>
+
     <p class="hero-sub reveal reveal-delay-2">
-      We fund scholarships for Nigerian university students and fight malaria in underserved communities — because education and health are the foundation of everything.
+      Every year, thousands of qualified Nigerian students drop out — not from lack of ability, but lack of funding. Your donation keeps them enrolled, and protects their communities from malaria. 100% goes directly to programs.
     </p>
+
     <div class="hero-ctas reveal reveal-delay-3">
-      <a href="#donate" class="btn btn-gold">Donate Now</a>
-      <a href="#programs" class="btn btn-white">Our Programs</a>
+      <a href="#give" class="btn btn-gold btn-pulse">Donate Now</a>
+      <a href="#programs" class="btn btn-white">See Our Work</a>
     </div>
+
     <div class="hero-trust reveal reveal-delay-4">
-      <div class="hero-trust-badge">
-        <span>✓</span> 501(c)(3) Verified
-      </div>
-      <div class="hero-trust-badge">
-        <span>✓</span> California Incorporated
-      </div>
-      <div class="hero-trust-badge">
-        <span>✓</span> Tax-Deductible Donations
-      </div>
+      <div class="hero-trust-badge"><span>✓</span> 501(c)(3) Verified</div>
+      <div class="hero-trust-badge"><span>✓</span> Tax-Deductible</div>
+      <div class="hero-trust-badge"><span>✓</span> 100% to Programs</div>
     </div>
   </div>
 
   <div class="hero-scroll">
     <div class="hero-scroll-line"></div>
     <span>Scroll</span>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     DONATION WIDGET
+══════════════════════════════════════════════════ -->
+<section id="give">
+  <div class="container">
+    <div class="give-inner">
+
+      <div class="give-left">
+        <span class="section-label">Make an Impact Today</span>
+        <h2>Choose What You Want to Fund</h2>
+        <p>Every dollar is tracked, documented, and directed to the people who need it most. No overhead. No waste.</p>
+        <div class="give-urgency">
+          <span class="urgency-dot"></span>
+          We are building our founding donor community. <strong>Be one of our first 100 supporters</strong> and help launch our 2026 scholarship cohort.
+        </div>
+      </div>
+
+      <div class="give-right">
+        <div class="donation-widget">
+          <p class="widget-label">Select an amount</p>
+          <div class="amount-grid">
+            <button class="amount-btn" data-amount="10" data-impact="Covers school supplies for a student for one month">$10</button>
+            <button class="amount-btn active" data-amount="25" data-impact="Buys an insecticide-treated mosquito net that protects a family">$25</button>
+            <button class="amount-btn" data-amount="50" data-impact="Provides a student's textbooks for an entire semester">$50</button>
+            <button class="amount-btn" data-amount="100" data-impact="Helps cover one month of a student's university tuition">$100</button>
+            <button class="amount-btn amount-btn--other" data-amount="other">Other</button>
+          </div>
+          <div class="custom-amount-wrap" id="custom-wrap">
+            <span class="custom-prefix">$</span>
+            <input type="number" id="custom-amount" class="custom-input" placeholder="Enter amount" min="1" />
+          </div>
+          <div class="impact-statement" id="impact-statement">
+            <span class="impact-icon">🦟</span>
+            <span id="impact-text">Buys an insecticide-treated mosquito net that protects a family</span>
+          </div>
+          <a href="#" class="btn btn-gold btn-donate-action btn-pulse" id="donate-action">
+            Donate $25 Now
+          </a>
+          <p class="widget-note">Secure donation · Tax-deductible · 501(c)(3) verified</p>
+        </div>
+      </div>
+
+    </div>
   </div>
 </section>
 
@@ -115,13 +168,13 @@
       <div class="pillar reveal reveal-delay-1">
         <span class="pillar-icon">🏥</span>
         <h3>Malaria Prevention</h3>
-        <p>Grassroots health education, mosquito net distribution, and community-based research to eliminate malaria in vulnerable communities.</p>
+        <p>Grassroots health education, mosquito net distribution, and community research to eliminate malaria in vulnerable communities.</p>
       </div>
 
       <div class="pillar reveal reveal-delay-2">
         <span class="pillar-icon">🤝</span>
         <h3>Community Impact</h3>
-        <p>Partnering with local institutions, health providers, and community leaders to build sustainable change that lasts beyond any single program.</p>
+        <p>Partnering with local institutions, health providers, and community leaders to build sustainable change that outlasts any single program.</p>
       </div>
 
     </div>
@@ -137,12 +190,12 @@
 
       <div class="about-text">
         <span class="section-label reveal">Who We Are</span>
-        <h2 class="reveal reveal-delay-1">Breaking Cycles of Poverty Through Education and Health</h2>
+        <h2 class="reveal reveal-delay-1">Built on the Belief That Poverty Should Never Decide Who Gets an Education</h2>
         <p class="about-mission reveal reveal-delay-2">
-          Life Changers Education, Research and Medical Foundation (LCERMF) is a California-based 501(c)(3) nonprofit dedicated to serving low-income and underserved communities in Nigeria. We exist to empower students to pursue and complete higher education, and to equip communities with the knowledge and tools necessary to eliminate malaria.
+          Life Changers Education, Research and Medical Foundation (LCERMF) is a California-based 501(c)(3) nonprofit dedicated to two things: keeping qualified Nigerian students in school, and protecting their communities from malaria.
         </p>
         <p class="about-mission reveal reveal-delay-2">
-          We believe that a student who graduates changes a family. A community free of malaria grows. And a nation with both education and health can thrive. That is the future we are building.
+          We are a lean, transparent, governance-first organization. Our founders believe that a dollar donated should do exactly what it promises. That is why we have written policies, independent oversight, and zero tolerance for administrative waste.
         </p>
         <div class="about-vision reveal reveal-delay-3">
           <p>"We see a future where every Nigerian student has equal access to education, and where malaria is no longer a barrier to health, economic stability, and national development."</p>
@@ -167,8 +220,8 @@
   <div class="container">
     <div class="section-header">
       <span class="section-label reveal">Our Programs</span>
-      <h2 class="reveal reveal-delay-1">Two Missions. One Foundation.</h2>
-      <p class="reveal reveal-delay-2">Everything we do is focused on creating lasting change for low-income communities in Nigeria — one student, one family, one community at a time.</p>
+      <h2 class="reveal reveal-delay-1">Two Programs. One Purpose.</h2>
+      <p class="reveal reveal-delay-2">Everything we do is built around a single outcome — giving Nigerian children and communities a real shot at a better life.</p>
     </div>
 
     <div class="programs-grid">
@@ -181,13 +234,13 @@
         <div class="program-card-body">
           <span class="program-tag">Education</span>
           <h3>Education Access &amp; Scholarship Program</h3>
-          <p>Many qualified students in Nigeria are unable to complete university education due to financial hardship. We provide structured financial assistance, mentorship, and support so that potential is never stopped by poverty.</p>
+          <p class="program-lead">Qualified students are dropping out — not because they failed, but because they ran out of money. We fix that.</p>
           <ul class="program-points">
-            <li>Scholarships covering tuition, books, and academic fees</li>
-            <li>Living stipends for accommodation, food, and transportation</li>
-            <li>Mentorship and ongoing academic monitoring</li>
-            <li>Open to all students regardless of gender, ethnicity, or religion</li>
-            <li>Selected based on financial need, academic potential, and community commitment</li>
+            <li><strong>What it does:</strong> Provides tuition, books, and academic fees directly to the institution</li>
+            <li><strong>Who it helps:</strong> Low-income university students across Nigeria with proven academic potential</li>
+            <li><strong>What changes:</strong> Students stay enrolled, graduate, and give back to their communities</li>
+            <li>Living stipends for accommodation, food, and transport where needed</li>
+            <li>Ongoing mentorship and academic monitoring from enrollment to graduation</li>
           </ul>
           <a href="#scholarship" class="btn btn-green">Apply for a Scholarship</a>
         </div>
@@ -201,13 +254,13 @@
         <div class="program-card-body">
           <span class="program-tag">Health</span>
           <h3>Malaria Prevention &amp; Community Health Initiative</h3>
-          <p>Malaria remains a leading cause of death in low-income Nigerian communities. We work at the grassroots level to educate, prevent, and protect — giving communities the tools to fight back.</p>
+          <p class="program-lead">Malaria kills hundreds of thousands in Nigeria every year — and most deaths are entirely preventable.</p>
           <ul class="program-points">
-            <li>Grassroots malaria education workshops in local communities</li>
-            <li>Distribution of insecticide-treated mosquito nets</li>
+            <li><strong>What it does:</strong> Runs education workshops and distributes insecticide-treated mosquito nets</li>
+            <li><strong>Who it helps:</strong> Low-income communities with limited access to healthcare and health information</li>
+            <li><strong>What changes:</strong> Communities learn to prevent infection and reduce malaria transmission</li>
             <li>Partnerships with local health clinics and community leaders</li>
-            <li>Community-based surveys on malaria awareness and prevention</li>
-            <li>Collaboration with public health professionals and researchers</li>
+            <li>Community surveys to track awareness and measure prevention outcomes</li>
           </ul>
           <a href="#faq" class="btn btn-outline">Learn More</a>
         </div>
@@ -218,42 +271,89 @@
 </section>
 
 <!-- ══════════════════════════════════════════════════
-     IMPACT STATS
+     STORY SECTION
+══════════════════════════════════════════════════ -->
+<section id="story" class="section--green">
+  <div class="container">
+    <div class="story-grid">
+
+      <div class="story-photo reveal">
+        <img src="img/1773815699860-79g6qq8chk4.jpg" alt="Student studying by window light" />
+        <div class="story-photo-caption">
+          A student studying at home by window light — a reality for millions of Nigerian families without consistent electricity.
+        </div>
+      </div>
+
+      <div class="story-text">
+        <span class="section-label reveal">Why This Matters</span>
+        <h2 class="reveal reveal-delay-1">The Gap Between Potential and Opportunity</h2>
+
+        <div class="story-block reveal reveal-delay-2">
+          <div class="story-chapter">The Problem</div>
+          <p>In Nigeria, nearly 10 million young people who qualify for university education never enroll — or drop out before finishing. The barrier is almost never ability. It is almost always money. A student who cannot pay term fees is sent home. A family that cannot buy nets watches children get sick from a preventable disease.</p>
+        </div>
+
+        <div class="story-block reveal reveal-delay-3">
+          <div class="story-chapter">What We Do</div>
+          <p>LCERMF steps in at exactly that point. We identify students who have earned their place in university but cannot fund it. We provide the scholarship. We stay involved. And in the same communities, we teach families how to protect themselves from malaria — and give them the nets to do it.</p>
+        </div>
+
+        <div class="story-block reveal reveal-delay-4">
+          <div class="story-chapter">The Result</div>
+          <p>A student who graduates changes more than her own life. She changes her family's trajectory. She becomes a teacher, a nurse, an engineer — someone who gives back. That is the multiplier effect of education. And it starts with one scholarship funded by one donor like you.</p>
+        </div>
+
+        <div class="story-cta reveal reveal-delay-4">
+          <a href="#give" class="btn btn-gold btn-pulse">Fund a Student's Future</a>
+        </div>
+      </div>
+
+    </div>
+  </div>
+</section>
+
+<!-- ══════════════════════════════════════════════════
+     IMPACT / WHERE WE STAND
 ══════════════════════════════════════════════════ -->
 <section id="impact">
   <div class="container">
     <div class="section-header">
-      <span class="section-label reveal">Our Impact</span>
-      <h2 class="reveal reveal-delay-1">Building From the Ground Up</h2>
-      <p class="reveal reveal-delay-2">LCERMF is a growing foundation with clear goals and a structured plan. Every dollar donated goes directly into programming.</p>
+      <span class="section-label reveal">Where We Stand</span>
+      <h2 class="reveal reveal-delay-1">Transparent From Day One</h2>
+      <p class="reveal reveal-delay-2">We are an early-stage foundation. We will not inflate our numbers. Here is exactly where we are — and where your donation takes us.</p>
     </div>
 
     <div class="stats-grid">
 
       <div class="stat-card reveal">
-        <div class="stat-number" data-target="0" data-suffix="+">0</div>
-        <div class="stat-label">Students Supported</div>
-        <div class="stat-desc">Scholarships being awarded in 2025</div>
+        <div class="stat-number">2026</div>
+        <div class="stat-label">First Scholar Cohort</div>
+        <div class="stat-desc">Pilot scholarships launching — funded by our founding donors</div>
       </div>
 
       <div class="stat-card reveal reveal-delay-1">
-        <div class="stat-number" data-target="0" data-suffix="+">0</div>
-        <div class="stat-label">Communities Reached</div>
-        <div class="stat-desc">Malaria education programs launching in 2025</div>
+        <div class="stat-number">100%</div>
+        <div class="stat-label">Program-Directed Funds</div>
+        <div class="stat-desc">Every donated dollar goes to scholarships and health programs</div>
       </div>
 
       <div class="stat-card reveal reveal-delay-2">
-        <div class="stat-number" data-target="100" data-suffix="%">0</div>
-        <div class="stat-label">Program-Directed Funds</div>
-        <div class="stat-desc">All donations go directly to programs</div>
+        <div class="stat-number">$0</div>
+        <div class="stat-label">Admin Overhead</div>
+        <div class="stat-desc">No founder salaries drawn from donated funds at this stage</div>
       </div>
 
       <div class="stat-card reveal reveal-delay-3">
-        <div class="stat-number" data-target="501" data-suffix="(c)(3)">0</div>
-        <div class="stat-label">Federally Recognized</div>
-        <div class="stat-desc">Tax-exempt status — your gift is fully deductible</div>
+        <div class="stat-number">100</div>
+        <div class="stat-label">Founding Donors Goal</div>
+        <div class="stat-desc">Help us reach our first 100 supporters and launch our pilot</div>
       </div>
 
+    </div>
+
+    <div class="impact-cta reveal">
+      <p>Ready to be part of the founding donor community?</p>
+      <a href="#give" class="btn btn-gold">Join the First 100</a>
     </div>
   </div>
 </section>
@@ -266,7 +366,7 @@
     <div class="section-header">
       <span class="section-label reveal">The Community</span>
       <h2 class="reveal reveal-delay-1">The Faces Behind Our Mission</h2>
-      <p class="reveal reveal-delay-2">These are the children, students, and communities we serve. Every donation is a direct investment in their future.</p>
+      <p class="reveal reveal-delay-2">These are the children, students, and communities we are building this foundation for. Every donation is a direct investment in their future.</p>
     </div>
 
     <div class="gallery-grid reveal">
@@ -304,9 +404,9 @@
 <section id="trust" class="section">
   <div class="container">
     <div class="section-header">
-      <span class="section-label reveal">Why Trust Us</span>
-      <h2 class="reveal reveal-delay-1">Transparent, Accountable, and Properly Structured</h2>
-      <p class="reveal reveal-delay-2">We hold ourselves to the highest standards of nonprofit governance so that every donor can give with full confidence.</p>
+      <span class="section-label reveal">Accountability</span>
+      <h2 class="reveal reveal-delay-1">We Hold Ourselves to the Standard You Deserve</h2>
+      <p class="reveal reveal-delay-2">Before we ask for a single dollar, we put the structures in place to protect it. Every policy below is in writing and on file.</p>
     </div>
 
     <div class="trust-grid">
@@ -314,44 +414,44 @@
       <div class="trust-card reveal">
         <span class="trust-icon">📋</span>
         <h3>501(c)(3) Verified</h3>
-        <p>Officially recognized by the IRS as a tax-exempt public charity. All donations are fully tax-deductible under U.S. federal law.</p>
+        <p>IRS-recognized tax-exempt charity. All donations are fully tax-deductible under U.S. federal law.</p>
       </div>
 
       <div class="trust-card reveal reveal-delay-1">
         <span class="trust-icon">🏛</span>
         <h3>California Incorporated</h3>
-        <p>Formally incorporated as a California nonprofit public benefit corporation with active registration on file.</p>
+        <p>Formally incorporated as a California nonprofit public benefit corporation with active state registration.</p>
       </div>
 
       <div class="trust-card reveal reveal-delay-2">
         <span class="trust-icon">💰</span>
         <h3>Financial Controls Policy</h3>
-        <p>All funds are managed under a written Financial Controls Policy with dual-signatory banking, annual audits, and documented expenditures.</p>
+        <p>Dual-signatory banking. Annual audits. Every expenditure documented with receipts.</p>
       </div>
 
       <div class="trust-card reveal">
         <span class="trust-icon">⚖️</span>
         <h3>Conflict of Interest Policy</h3>
-        <p>Board members and officers operate under a formal Conflict of Interest Policy to ensure all decisions serve the mission, not individuals.</p>
+        <p>Board members cannot benefit personally. All decisions are governed by the mission — nothing else.</p>
       </div>
 
       <div class="trust-card reveal reveal-delay-1">
         <span class="trust-icon">🎓</span>
         <h3>Scholarship Selection Policy</h3>
-        <p>Recipients are selected by an independent committee using objective, written criteria. No scholarships are awarded to insiders or their families.</p>
+        <p>Independent committee. Written criteria. No scholarships go to insiders or their families. Ever.</p>
       </div>
 
       <div class="trust-card reveal reveal-delay-2">
         <span class="trust-icon">🌍</span>
         <h3>Field Accountability Policy</h3>
-        <p>LCERMF retains full control of all Nigerian operations. Local coordinators operate under written agreements with documented reporting and receipts.</p>
+        <p>Full LCERMF control over all Nigerian operations. Written agreements, documented disbursements, verified receipts.</p>
       </div>
 
     </div>
 
     <div class="trust-statement reveal">
       <h3>100% of Donations Go to Programs</h3>
-      <p>We are committed to directing every donated dollar toward scholarships, malaria prevention, and community health programs. Our founders do not draw salaries from donated funds during the foundation's early stages. You give to change a life — and that is exactly where your money goes.</p>
+      <p>Our founders do not draw salaries from donated funds at this stage. When you donate to LCERMF, your money funds scholarships and health programs — not administration. We will always tell you exactly where your money goes.</p>
     </div>
 
   </div>
@@ -366,22 +466,22 @@
 
       <div class="scholarship-text">
         <span class="section-label reveal">Scholarship Program</span>
-        <h2 class="reveal reveal-delay-1">Is This Scholarship Right for You?</h2>
+        <h2 class="reveal reveal-delay-1">Are You the Student We Are Looking For?</h2>
         <p class="reveal reveal-delay-2">
-          We provide financial assistance to college and university students from low-income families across Nigeria who demonstrate both financial need and academic potential.
+          We support college and university students from low-income families across Nigeria who have earned their place in higher education but cannot fund it on their own.
         </p>
         <p class="reveal reveal-delay-2">
-          Scholarships cover tuition, academic fees, books, and where applicable, living stipends to support accommodation and basic needs — so you can focus entirely on your education.
+          Scholarships cover tuition, academic fees, textbooks, and where applicable, a living stipend for accommodation and basic needs — so your only job is to focus on your studies.
         </p>
         <div class="scholarship-ctas reveal reveal-delay-3">
-          <a href="#" class="btn btn-green">Apply Now (Coming Soon)</a>
+          <a href="#" class="btn btn-green">Apply Now (Launching 2026)</a>
           <a href="#faq" class="btn btn-outline">Read FAQ</a>
         </div>
       </div>
 
       <div class="scholarship-criteria reveal reveal-delay-2">
         <div>
-          <h3>Selection Criteria</h3>
+          <h3>Who Qualifies</h3>
           <ul class="criteria-list">
             <li>
               <div class="criteria-check">✓</div>
@@ -389,23 +489,23 @@
             </li>
             <li>
               <div class="criteria-check">✓</div>
-              <span>Currently enrolled or admitted to an accredited Nigerian institution</span>
+              <span>Enrolled or admitted to an accredited Nigerian university or college</span>
             </li>
             <li>
               <div class="criteria-check">✓</div>
-              <span>Strong academic achievement or clear academic potential</span>
+              <span>Strong academic record or clear academic potential</span>
             </li>
             <li>
               <div class="criteria-check">✓</div>
-              <span>Commitment to community service or a desire to contribute to Nigeria's development</span>
+              <span>Commitment to community service or contributing to Nigeria's development</span>
             </li>
             <li>
               <div class="criteria-check">✓</div>
-              <span>Open to all genders, ethnicities, and religions</span>
+              <span>Open to all students regardless of gender, ethnicity, or religion</span>
             </li>
             <li>
               <div class="criteria-check">✓</div>
-              <span>Willing to provide proof of enrollment and periodic progress updates</span>
+              <span>Willing to maintain academic standing and submit progress updates</span>
             </li>
           </ul>
         </div>
@@ -418,15 +518,15 @@
 <!-- ══════════════════════════════════════════════════
      DONATE CTA
 ══════════════════════════════════════════════════ -->
-<section id="donate">
+<section id="donate-cta">
   <div class="donate-inner">
     <span class="section-label reveal">Make a Difference</span>
-    <h2 class="reveal reveal-delay-1">Your Gift Changes a Life in Nigeria</h2>
+    <h2 class="reveal reveal-delay-1">Be One of Our First 100 Founding Donors</h2>
     <p class="reveal reveal-delay-2">
-      A scholarship funded today keeps a student in school tomorrow. A mosquito net distributed today saves a child this season. Your donation — any amount — has direct, measurable impact on real lives.
+      We are building our founding donor community right now. The first 100 people who give will directly fund the launch of our pilot scholarship cohort in 2026. This is the moment before the momentum — and your name will be part of how it all started.
     </p>
     <div class="donate-ctas reveal reveal-delay-3">
-      <a href="#" class="btn btn-gold">Donate Now</a>
+      <a href="#give" class="btn btn-gold btn-pulse">Join the First 100</a>
       <a href="#scholarship" class="btn btn-white">Support a Student</a>
     </div>
     <p class="donate-note reveal reveal-delay-4">LCERMF is a 501(c)(3) nonprofit. All donations are tax-deductible. EIN on file.</p>
@@ -440,8 +540,8 @@
   <div class="container">
     <div class="section-header">
       <span class="section-label reveal">Questions</span>
-      <h2 class="reveal reveal-delay-1">Frequently Asked Questions</h2>
-      <p class="reveal reveal-delay-2">Everything you need to know about LCERMF, our programs, and how to get involved.</p>
+      <h2 class="reveal reveal-delay-1">Everything You Want to Know</h2>
+      <p class="reveal reveal-delay-2">We believe in radical transparency. If your question is not here, email us directly.</p>
     </div>
 
     <div class="faq-list reveal">
@@ -452,7 +552,7 @@
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          <p>LCERMF serves low-income and underserved communities in Nigeria. Our scholarship program focuses on college and university students from financially disadvantaged families across Nigeria. Our malaria prevention program reaches grassroots communities with limited access to healthcare and health education.</p>
+          <p>LCERMF serves low-income and underserved communities in Nigeria. Our scholarship program targets college and university students from financially disadvantaged families who have academic potential but cannot afford to continue their education. Our malaria prevention program reaches grassroots communities with limited access to healthcare and health education.</p>
         </div>
       </div>
 
@@ -462,7 +562,17 @@
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          <p>Yes. LCERMF is a recognized 501(c)(3) nonprofit organization under the U.S. Internal Revenue Code. All donations made to LCERMF are fully tax-deductible to the extent permitted by law. You will receive a donation receipt for your records.</p>
+          <p>Yes. LCERMF is a recognized 501(c)(3) nonprofit organization under the U.S. Internal Revenue Code. All donations are fully tax-deductible to the extent permitted by law. You will receive a donation receipt for your records upon giving.</p>
+        </div>
+      </div>
+
+      <div class="faq-item">
+        <button class="faq-question">
+          Where exactly does my donation go?
+          <span class="faq-icon">+</span>
+        </button>
+        <div class="faq-answer">
+          <p>100% of donated funds go directly to programs — scholarships paid to educational institutions, malaria prevention materials, and community health workshops. Our founders are not drawing salaries from donated funds at this stage of the organization. We maintain written financial controls and document every expenditure.</p>
         </div>
       </div>
 
@@ -472,7 +582,7 @@
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          <p>Scholarship recipients are selected by an independent Scholarship Committee using written, objective criteria including financial need, academic achievement, and commitment to community service. No scholarships are awarded to board members, officers, or their family members. Funds are paid directly to the educational institution wherever possible.</p>
+          <p>Scholarship recipients are selected by an independent Scholarship Committee using written, objective scoring criteria including financial need, academic achievement, and community commitment. No scholarships are awarded to board members, officers, or their family members. Wherever possible, funds are paid directly to the educational institution — not to the student.</p>
         </div>
       </div>
 
@@ -482,17 +592,17 @@
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          <p>Our Malaria Prevention Initiative conducts grassroots education workshops, distributes culturally appropriate health materials, and partners with local health clinics and community leaders. We also support distribution of insecticide-treated mosquito nets and conduct community surveys to assess malaria awareness and prevention practices. All field activities are managed under written agreements with full documentation and oversight maintained by LCERMF.</p>
+          <p>Our Malaria Prevention Initiative runs grassroots education workshops, distributes insecticide-treated mosquito nets, and partners with local health clinics and community leaders. We conduct community surveys to track awareness and prevention outcomes. All Nigerian field operations are managed under written agreements with full documentation and LCERMF retains oversight of all funds.</p>
         </div>
       </div>
 
       <div class="faq-item">
         <button class="faq-question">
-          How are funds managed and tracked?
+          When will the first scholarships be awarded?
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          <p>LCERMF operates under a formal Financial Controls Policy. All funds are held in a foundation bank account requiring dual-signatory authorization. Accounts are audited annually. Nigerian field operations are governed by written agreements with local coordinators, and all expenditures are documented with receipts. LCERMF retains full control of all charitable activities and does not act as a conduit for any foreign organization.</p>
+          <p>We are targeting our pilot scholarship cohort launch for 2026. The number of students we can support depends directly on how many founding donors join us now. Every donation at this stage has a direct, traceable impact on how many students we can help in our first year.</p>
         </div>
       </div>
 
@@ -502,7 +612,7 @@
           <span class="faq-icon">+</span>
         </button>
         <div class="faq-answer">
-          <p>There are several ways to support our mission. You can share our story with your network, connect us with potential donors or grant-making foundations, volunteer your skills in areas like communications, health education, or program management, or become a corporate sponsor. Reach out to us directly at the contact below to start a conversation.</p>
+          <p>You can share our story with your network, connect us with potential grant-making foundations, volunteer your skills in communications, health education, or program coordination, or become a corporate sponsor. Reach out to us directly at the email in the footer and we will be in touch within 48 hours.</p>
         </div>
       </div>
 
@@ -522,8 +632,8 @@
           <img src="img/LCERMF LOGO.jpeg" alt="LCERMF Logo" />
           <span class="footer-logo-text">Life Changers Foundation</span>
         </div>
-        <p>Empowering Nigerian students through education and protecting communities from malaria. A 501(c)(3) nonprofit based in California.</p>
-        <a href="#donate" class="footer-donate">Donate Now</a>
+        <p>Keeping Nigerian students in school and protecting communities from malaria. A 501(c)(3) nonprofit based in California.</p>
+        <a href="#give" class="footer-donate">Donate Now</a>
       </div>
 
       <div class="footer-col">
@@ -531,7 +641,7 @@
         <ul>
           <li><a href="#about">About Us</a></li>
           <li><a href="#programs">Our Programs</a></li>
-          <li><a href="#impact">Our Impact</a></li>
+          <li><a href="#impact">Where We Stand</a></li>
           <li><a href="#trust">Governance</a></li>
         </ul>
       </div>
@@ -539,7 +649,7 @@
       <div class="footer-col">
         <h4>Get Involved</h4>
         <ul>
-          <li><a href="#donate">Donate</a></li>
+          <li><a href="#give">Donate</a></li>
           <li><a href="#scholarship">Apply for Scholarship</a></li>
           <li><a href="#faq">FAQ</a></li>
           <li><a href="mailto:info@lcermf.org">Contact Us</a></li>
@@ -550,7 +660,7 @@
         <h4>Contact</h4>
         <ul>
           <li><a href="mailto:info@lcermf.org">info@lcermf.org</a></li>
-          <li><a href="#">California, USA</a></li>
+          <li><span>California, USA</span></li>
         </ul>
       </div>
 
@@ -566,9 +676,6 @@
   </div>
 </footer>
 
-<!-- ══════════════════════════════════════════════════
-     SCRIPTS
-══════════════════════════════════════════════════ -->
 <script src="js/app.js"></script>
 </body>
 </html>

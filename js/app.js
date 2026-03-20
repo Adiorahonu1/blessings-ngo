@@ -25,7 +25,16 @@ function closeMobileMenu() {
   mobileMenu.classList.remove('open');
 }
 
-/* ── Scroll reveal via IntersectionObserver ─────────────────── */
+/* ── Sticky mobile donate bar ───────────────────────────────── */
+const stickyBar  = document.getElementById('sticky-donate');
+const heroEl     = document.getElementById('hero');
+
+window.addEventListener('scroll', () => {
+  const heroBtm = heroEl.getBoundingClientRect().bottom;
+  stickyBar.classList.toggle('visible', heroBtm < 0);
+}, { passive: true });
+
+/* ── Scroll reveal ───────────────────────────────────────────── */
 const revealEls = document.querySelectorAll('.reveal');
 const revealObserver = new IntersectionObserver((entries) => {
   entries.forEach(entry => {
@@ -38,50 +47,71 @@ const revealObserver = new IntersectionObserver((entries) => {
 
 revealEls.forEach(el => revealObserver.observe(el));
 
-/* ── Stat counters ──────────────────────────────────────────── */
-const statNumbers = document.querySelectorAll('.stat-number[data-target]');
+/* ── Donation widget ─────────────────────────────────────────── */
+const amountBtns    = document.querySelectorAll('.amount-btn');
+const customWrap    = document.getElementById('custom-wrap');
+const customInput   = document.getElementById('custom-amount');
+const impactText    = document.getElementById('impact-text');
+const donateAction  = document.getElementById('donate-action');
+const impactIcons   = { 10: '📚', 25: '🦟', 50: '📖', 100: '🎓' };
 
-const counterObserver = new IntersectionObserver((entries) => {
-  entries.forEach(entry => {
-    if (!entry.isIntersecting) return;
-    const el     = entry.target;
-    const target = parseInt(el.dataset.target, 10);
-    const suffix = el.dataset.suffix || '';
-    counterObserver.unobserve(el);
+let selectedAmount = 25;
 
-    if (target === 0) {
-      el.textContent = 'Growing';
-      return;
+function updateDonateBtn(amount) {
+  donateAction.textContent = `Donate $${amount} Now`;
+}
+
+function updateImpact(btn) {
+  const impact = btn.dataset.impact;
+  const amount = btn.dataset.amount;
+  if (impact) {
+    impactText.textContent = impact;
+    const icon = impactIcons[amount] || '💚';
+    btn.closest('.donation-widget').querySelector('.impact-icon').textContent = icon;
+  }
+}
+
+amountBtns.forEach(btn => {
+  btn.addEventListener('click', () => {
+    amountBtns.forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+
+    if (btn.dataset.amount === 'other') {
+      customWrap.classList.add('show');
+      customInput.focus();
+      const val = parseInt(customInput.value, 10);
+      if (val > 0) {
+        selectedAmount = val;
+        updateDonateBtn(val);
+      } else {
+        donateAction.textContent = 'Donate Now';
+      }
+      impactText.textContent = 'Your gift goes directly to scholarships and malaria prevention.';
+      btn.closest('.donation-widget').querySelector('.impact-icon').textContent = '💚';
+    } else {
+      customWrap.classList.remove('show');
+      selectedAmount = parseInt(btn.dataset.amount, 10);
+      updateDonateBtn(selectedAmount);
+      updateImpact(btn);
     }
-
-    let start = 0;
-    const duration = 1600;
-    const startTime = performance.now();
-
-    function tick(now) {
-      const elapsed = now - startTime;
-      const progress = Math.min(elapsed / duration, 1);
-      const ease = 1 - Math.pow(1 - progress, 3);
-      const current = Math.round(ease * target);
-      el.textContent = current + suffix;
-      if (progress < 1) requestAnimationFrame(tick);
-    }
-    requestAnimationFrame(tick);
   });
-}, { threshold: 0.4 });
+});
 
-statNumbers.forEach(el => counterObserver.observe(el));
+customInput.addEventListener('input', () => {
+  const val = parseInt(customInput.value, 10);
+  if (val > 0) {
+    selectedAmount = val;
+    updateDonateBtn(val);
+  } else {
+    donateAction.textContent = 'Donate Now';
+  }
+});
 
 /* ── FAQ accordion ──────────────────────────────────────────── */
-const faqItems = document.querySelectorAll('.faq-item');
-
-faqItems.forEach(item => {
-  const btn = item.querySelector('.faq-question');
-  btn.addEventListener('click', () => {
+document.querySelectorAll('.faq-item').forEach(item => {
+  item.querySelector('.faq-question').addEventListener('click', () => {
     const isOpen = item.classList.contains('open');
-    // close all
-    faqItems.forEach(i => i.classList.remove('open'));
-    // toggle clicked
+    document.querySelectorAll('.faq-item').forEach(i => i.classList.remove('open'));
     if (!isOpen) item.classList.add('open');
   });
 });
@@ -92,8 +122,8 @@ document.querySelectorAll('a[href^="#"]').forEach(anchor => {
     const target = document.querySelector(anchor.getAttribute('href'));
     if (!target) return;
     e.preventDefault();
-    const navH   = nav.offsetHeight;
-    const top    = target.getBoundingClientRect().top + window.scrollY - navH - 8;
+    const navH = nav.offsetHeight;
+    const top  = target.getBoundingClientRect().top + window.scrollY - navH - 8;
     window.scrollTo({ top, behavior: 'smooth' });
   });
 });
