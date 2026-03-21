@@ -116,6 +116,86 @@ document.querySelectorAll('.faq-item').forEach(item => {
   });
 });
 
+/* ── Malaria stat counters ───────────────────────────────────── */
+(function () {
+  const counters = document.querySelectorAll('.malaria-stat-number[data-target]');
+  if (!counters.length) return;
+
+  const ease = (t) => t < 0.5 ? 2 * t * t : -1 + (4 - 2 * t) * t;
+
+  function animateCounter(el) {
+    const target  = parseInt(el.dataset.target, 10);
+    const duration = 1800;
+    const start   = performance.now();
+
+    function step(now) {
+      const progress = Math.min((now - start) / duration, 1);
+      el.textContent = Math.floor(ease(progress) * target);
+      if (progress < 1) requestAnimationFrame(step);
+      else el.textContent = target;
+    }
+    requestAnimationFrame(step);
+  }
+
+  const observer = new IntersectionObserver((entries) => {
+    entries.forEach(entry => {
+      if (entry.isIntersecting) {
+        animateCounter(entry.target);
+        observer.unobserve(entry.target);
+      }
+    });
+  }, { threshold: 0.4 });
+
+  counters.forEach(el => observer.observe(el));
+})();
+
+/* ── Scholars — encouragement message wall ───────────────────── */
+(function () {
+  const form        = document.getElementById('message-form');
+  const wall        = document.getElementById('messages-wall');
+  const STORAGE_KEY = 'lcermf_messages';
+
+  function renderMessage({ name, text }) {
+    const card = document.createElement('div');
+    card.className = 'message-card';
+    const safeName = (name || '').replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    const safeText = text.replace(/</g, '&lt;').replace(/>/g, '&gt;');
+    card.innerHTML = `<p class="message-text">&ldquo;${safeText}&rdquo;</p>
+      <span class="message-author">&mdash; ${safeName || 'Anonymous Supporter'}</span>`;
+    wall.prepend(card);
+  }
+
+  function loadMessages() {
+    const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+    saved.forEach(m => renderMessage(m));
+  }
+
+  if (form && wall) {
+    loadMessages();
+
+    form.addEventListener('submit', e => {
+      e.preventDefault();
+      const name = document.getElementById('msg-name').value.trim();
+      const text = document.getElementById('msg-text').value.trim();
+      if (!text) return;
+
+      const msg   = { name, text };
+      const saved = JSON.parse(localStorage.getItem(STORAGE_KEY) || '[]');
+      saved.unshift(msg);
+      localStorage.setItem(STORAGE_KEY, JSON.stringify(saved.slice(0, 30)));
+
+      renderMessage(msg);
+      form.reset();
+
+      const btn = form.querySelector('button');
+      const orig = btn.textContent;
+      btn.textContent = '✓ Thank you!';
+      btn.disabled = true;
+      setTimeout(() => { btn.textContent = orig; btn.disabled = false; }, 2600);
+    });
+  }
+})();
+
 /* ── Smooth anchor scroll (with nav offset) ─────────────────── */
 document.querySelectorAll('a[href^="#"]').forEach(anchor => {
   anchor.addEventListener('click', e => {
