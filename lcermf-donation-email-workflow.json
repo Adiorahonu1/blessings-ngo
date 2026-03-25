@@ -1,0 +1,69 @@
+{
+  "name": "LCERMF — Donation Thank-You & Tax Receipt",
+  "nodes": [
+    {
+      "parameters": {
+        "httpMethod": "POST",
+        "path": "lcermf-donation",
+        "responseMode": "onReceived",
+        "responseData": "allEntries",
+        "options": {}
+      },
+      "id": "node-webhook",
+      "name": "Stripe Webhook",
+      "type": "n8n-nodes-base.webhook",
+      "typeVersion": 1,
+      "position": [240, 300],
+      "webhookId": "lcermf-donation"
+    },
+    {
+      "parameters": {
+        "jsCode": "// Extract donor data from Stripe checkout.session.completed payload\nconst obj = $input.first().json.body?.data?.object || {};\n\nconst rawName   = obj.customer_details?.name  || '';\nconst rawEmail  = obj.customer_details?.email || '';\nconst amountRaw = obj.amount_total || 0;\nconst created   = obj.created || Math.floor(Date.now() / 1000);\n\nconst donor_name   = rawName.trim() || 'Valued Supporter';\nconst donor_email  = rawEmail.trim();\nconst amount_usd   = (amountRaw / 100).toFixed(2);\nconst payment_id   = obj.id || 'N/A';\nconst is_monthly   = obj.mode === 'subscription';\nconst donation_type = is_monthly ? 'Monthly Recurring' : 'One-Time';\nconst payment_date  = new Date(created * 1000).toLocaleDateString('en-US', {\n  year: 'numeric', month: 'long', day: 'numeric'\n});\n\nif (!donor_email) {\n  throw new Error('No donor email found in Stripe payload');\n}\n\nreturn [{ json: { donor_name, donor_email, amount_usd, payment_id, donation_type, payment_date, is_monthly } }];"
+      },
+      "id": "node-code",
+      "name": "Extract Donor Data",
+      "type": "n8n-nodes-base.code",
+      "typeVersion": 2,
+      "position": [460, 300]
+    },
+    {
+      "parameters": {
+        "fromEmail": "info@lifechangersfs.com",
+        "toEmail": "={{ $json.donor_email }}",
+        "subject": "Thank you for supporting LCERMF 💚",
+        "emailFormat": "html",
+        "html": "<!DOCTYPE html>\n<html lang=\"en\">\n<head><meta charset=\"UTF-8\"><meta name=\"viewport\" content=\"width=device-width,initial-scale=1\"></head>\n<body style=\"margin:0;padding:0;background:#f4f6f9;font-family:'Helvetica Neue',Arial,sans-serif;\">\n\n  <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#f4f6f9;padding:40px 20px;\">\n    <tr><td align=\"center\">\n\n      <table width=\"600\" cellpadding=\"0\" cellspacing=\"0\" style=\"max-width:600px;width:100%;background:#ffffff;border-radius:12px;overflow:hidden;box-shadow:0 4px 20px rgba(0,0,0,0.08);\">\n\n        <!-- Header -->\n        <tr>\n          <td style=\"background:linear-gradient(135deg,#1a4f8a 0%,#2e8b3e 100%);padding:40px 48px;text-align:center;\">\n            <p style=\"margin:0 0 4px;color:rgba(255,255,255,0.7);font-size:11px;letter-spacing:3px;text-transform:uppercase;\">Life Changers</p>\n            <h1 style=\"margin:0 0 8px;color:#ffffff;font-size:26px;font-weight:700;letter-spacing:0.5px;\">Education, Research &amp; Medical Foundation</h1>\n            <p style=\"margin:0;color:rgba(255,255,255,0.85);font-size:13px;font-style:italic;\">Empowering Minds, Improving Health, Transforming Lives</p>\n          </td>\n        </tr>\n\n        <!-- Body -->\n        <tr>\n          <td style=\"padding:44px 48px;\">\n\n            <p style=\"margin:0 0 20px;color:#1a2a3a;font-size:16px;line-height:1.6;\">Dear {{ $json.donor_name }},</p>\n\n            <p style=\"margin:0 0 20px;color:#374151;font-size:15px;line-height:1.7;\">Thank you sincerely for your generous <strong>{{ $json.donation_type }}</strong> donation of <strong style=\"color:#2e8b3e;\">${{ $json.amount_usd }}</strong>. Your support directly funds scholarships for Nigerian university students and life-saving malaria prevention programmes in underserved communities.</p>\n\n            <p style=\"margin:0 0 32px;color:#374151;font-size:15px;line-height:1.7;\">Because of supporters like you, we are able to change lives — one student, one family, one community at a time.</p>\n\n            <!-- Tax Receipt Box -->\n            <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#f0f7f0;border:1px solid #c3e6c3;border-radius:8px;margin-bottom:32px;\">\n              <tr>\n                <td style=\"padding:28px 32px;\">\n                  <p style=\"margin:0 0 16px;color:#1a4f8a;font-size:11px;font-weight:700;letter-spacing:3px;text-transform:uppercase;\">Official Tax Receipt — 501(c)(3)</p>\n                  <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\">\n                    <tr><td style=\"padding:5px 0;color:#4b5563;font-size:13px;\">Organization</td><td style=\"padding:5px 0;color:#1a2a3a;font-size:13px;font-weight:600;text-align:right;\">Life Changers Education, Research &amp; Medical Foundation</td></tr>\n                    <tr><td style=\"padding:5px 0;color:#4b5563;font-size:13px;\">EIN</td><td style=\"padding:5px 0;color:#1a2a3a;font-size:13px;font-weight:600;text-align:right;\">93-4687547</td></tr>\n                    <tr><td style=\"padding:5px 0;color:#4b5563;font-size:13px;\">Donation Type</td><td style=\"padding:5px 0;color:#1a2a3a;font-size:13px;font-weight:600;text-align:right;\">{{ $json.donation_type }}</td></tr>\n                    <tr><td style=\"padding:5px 0;color:#4b5563;font-size:13px;\">Amount</td><td style=\"padding:5px 0;color:#2e8b3e;font-size:15px;font-weight:700;text-align:right;\">${{ $json.amount_usd }} USD</td></tr>\n                    <tr><td style=\"padding:5px 0;color:#4b5563;font-size:13px;\">Date</td><td style=\"padding:5px 0;color:#1a2a3a;font-size:13px;font-weight:600;text-align:right;\">{{ $json.payment_date }}</td></tr>\n                    <tr><td style=\"padding:5px 0;color:#4b5563;font-size:13px;\">Reference</td><td style=\"padding:5px 0;color:#6b7280;font-size:11px;text-align:right;\">{{ $json.payment_id }}</td></tr>\n                  </table>\n                  <p style=\"margin:16px 0 0;color:#6b7280;font-size:11px;border-top:1px solid #c3e6c3;padding-top:12px;\">No goods or services were provided in exchange for this contribution. Please retain this email as your official tax receipt.</p>\n                </td>\n              </tr>\n            </table>\n\n            <!-- Impact Statement -->\n            <table width=\"100%\" cellpadding=\"0\" cellspacing=\"0\" style=\"background:#f0f4ff;border-left:4px solid #1a4f8a;border-radius:0 8px 8px 0;margin-bottom:32px;\">\n              <tr>\n                <td style=\"padding:20px 24px;\">\n                  <p style=\"margin:0;color:#1a2a3a;font-size:14px;line-height:1.7;\">💚 <em>Your gift helps provide scholarships to Nigerian university students and funds mosquito net distribution and malaria prevention education in vulnerable communities.</em></p>\n                </td>\n              </tr>\n            </table>\n\n            <p style=\"margin:0 0 8px;color:#374151;font-size:15px;line-height:1.7;\">With heartfelt gratitude,</p>\n            <p style=\"margin:0;color:#1a4f8a;font-size:15px;font-weight:700;\">The LCERMF Team</p>\n\n          </td>\n        </tr>\n\n        <!-- Footer -->\n        <tr>\n          <td style=\"background:#f9fafb;border-top:1px solid #e5e7eb;padding:24px 48px;text-align:center;\">\n            <p style=\"margin:0 0 6px;color:#9ca3af;font-size:11px;\">Life Changers Education, Research &amp; Medical Foundation · 501(c)(3) Nonprofit</p>\n            <p style=\"margin:0;color:#9ca3af;font-size:11px;\"><a href=\"https://lifechangersfs.com\" style=\"color:#1a4f8a;text-decoration:none;\">lifechangersfs.com</a> &nbsp;·&nbsp; info@lifechangersfs.com</p>\n          </td>\n        </tr>\n\n      </table>\n\n    </td></tr>\n  </table>\n\n</body>\n</html>",
+        "options": {}
+      },
+      "id": "node-email",
+      "name": "Send Thank-You Email",
+      "type": "n8n-nodes-base.emailSend",
+      "typeVersion": 2,
+      "position": [680, 300],
+      "credentials": {
+        "smtp": {
+          "id": "REPLACE_WITH_YOUR_EMAIL_CREDENTIAL_ID",
+          "name": "REPLACE_WITH_YOUR_EMAIL_CREDENTIAL_NAME"
+        }
+      }
+    }
+  ],
+  "connections": {
+    "Stripe Webhook": {
+      "main": [
+        [{ "node": "Extract Donor Data", "type": "main", "index": 0 }]
+      ]
+    },
+    "Extract Donor Data": {
+      "main": [
+        [{ "node": "Send Thank-You Email", "type": "main", "index": 0 }]
+      ]
+    }
+  },
+  "active": false,
+  "settings": {
+    "executionOrder": "v1"
+  },
+  "tags": [],
+  "notes": "SETUP INSTRUCTIONS:\n\n1. IMPORT THIS FILE: n8n → Settings → Import Workflow → select this file\n\n2. SET EMAIL CREDENTIAL:\n   - Click the 'Send Thank-You Email' node\n   - Under Credential, select your existing email credential\n   - Update 'fromEmail' to your actual sending address\n\n3. GET YOUR WEBHOOK URL:\n   - Click the 'Stripe Webhook' node\n   - Copy the webhook URL shown (e.g. https://your-n8n.com/webhook/lcermf-donation)\n\n4. ADD WEBHOOK IN STRIPE:\n   - Stripe Dashboard → Developers → Webhooks → Add endpoint\n   - URL: paste your webhook URL from step 3\n   - Event: checkout.session.completed\n\n5. ACTIVATE: Toggle the workflow to Active\n\n6. ADD STRIPE PAYMENT LINKS to js/app.js:\n   - Stripe Dashboard → Payment Links → New\n   - Create one link per amount for both One-Time and Monthly\n   - Paste URLs into STRIPE_LINKS in js/app.js"
+}

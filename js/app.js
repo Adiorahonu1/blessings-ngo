@@ -48,6 +48,46 @@ const revealObserver = new IntersectionObserver((entries) => {
 revealEls.forEach(el => revealObserver.observe(el));
 
 /* ── Donation widget ─────────────────────────────────────────── */
+
+/*
+ * ─── STRIPE SETUP ────────────────────────────────────────────────────────────
+ * Replace each placeholder URL with your real Stripe Payment Link.
+ * How to create them:
+ *   1. Go to https://dashboard.stripe.com/payment-links → click "New"
+ *   2. For ONE-TIME links: set a fixed price (e.g. $25), name it "Donation – $25"
+ *   3. For MONTHLY links: set the same price but choose "Recurring" → Monthly
+ *   4. For CUSTOM links: enable "Let customer decide" price
+ *   5. Copy the generated https://buy.stripe.com/... URL and paste below
+ * ─────────────────────────────────────────────────────────────────────────────
+ */
+const STRIPE_LINKS = {
+  once: {
+    10:     'https://buy.stripe.com/REPLACE_ONCE_10',
+    25:     'https://buy.stripe.com/REPLACE_ONCE_25',
+    50:     'https://buy.stripe.com/REPLACE_ONCE_50',
+    100:    'https://buy.stripe.com/REPLACE_ONCE_100',
+    custom: 'https://buy.stripe.com/REPLACE_ONCE_CUSTOM'
+  },
+  monthly: {
+    10:     'https://buy.stripe.com/REPLACE_MONTHLY_10',
+    25:     'https://buy.stripe.com/REPLACE_MONTHLY_25',
+    50:     'https://buy.stripe.com/REPLACE_MONTHLY_50',
+    100:    'https://buy.stripe.com/REPLACE_MONTHLY_100',
+    custom: 'https://buy.stripe.com/REPLACE_MONTHLY_CUSTOM'
+  }
+};
+
+let donationType = 'once';
+
+/* Toggle between one-time and monthly */
+document.querySelectorAll('.toggle-btn').forEach(btn => {
+  btn.addEventListener('click', () => {
+    document.querySelectorAll('.toggle-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    donationType = btn.dataset.type;
+  });
+});
+
 const amountBtns    = document.querySelectorAll('.amount-btn');
 const customWrap    = document.getElementById('custom-wrap');
 const customInput   = document.getElementById('custom-amount');
@@ -105,6 +145,13 @@ customInput.addEventListener('input', () => {
   } else {
     donateAction.textContent = 'Donate Now';
   }
+});
+
+/* Open Stripe Payment Link on donate button click */
+donateAction.addEventListener('click', () => {
+  const links = STRIPE_LINKS[donationType];
+  const url   = links[selectedAmount] || links.custom;
+  window.open(url, '_blank', 'noopener,noreferrer');
 });
 
 /* ── FAQ accordion ──────────────────────────────────────────── */
