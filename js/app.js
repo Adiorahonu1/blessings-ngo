@@ -51,29 +51,36 @@ revealEls.forEach(el => revealObserver.observe(el));
 
 /*
  * ─── STRIPE SETUP ────────────────────────────────────────────────────────────
- * Replace each placeholder URL with your real Stripe Payment Link.
- * How to create them:
- *   1. Go to https://dashboard.stripe.com/payment-links → click "New"
- *   2. For ONE-TIME links: set a fixed price (e.g. $25), name it "Donation – $25"
- *   3. For MONTHLY links: set the same price but choose "Recurring" → Monthly
- *   4. For CUSTOM links: enable "Let customer decide" price
- *   5. Copy the generated https://buy.stripe.com/... URL and paste below
+ * You only need to create 2 Payment Links in your Stripe dashboard:
+ *
+ *   1. Go to https://dashboard.stripe.com/payment-links → "New"
+ *   2. ONE-TIME link:  Add a product → enable "Let customer choose price" → Save
+ *   3. MONTHLY link:   Same, but set Billing Period → Monthly under Pricing
+ *   4. Paste each https://buy.stripe.com/... URL below
+ *
+ * Preset amounts ($10, $25, $50, $100) will pre-fill automatically in checkout.
  * ─────────────────────────────────────────────────────────────────────────────
  */
 const STRIPE_LINKS = {
   once: {
-    10:     'https://buy.stripe.com/REPLACE_ONCE_10',
-    25:     'https://buy.stripe.com/REPLACE_ONCE_25',
-    50:     'https://buy.stripe.com/REPLACE_ONCE_50',
-    100:    'https://buy.stripe.com/REPLACE_ONCE_100',
-    custom: 'https://buy.stripe.com/REPLACE_ONCE_CUSTOM'
+    10:     'https://donate.stripe.com/14AeVf64k6K7adEa5s9ws0a',
+    25:     'https://donate.stripe.com/eVq14p0K01pN3Pg6Tg9ws0c',
+    50:     'https://donate.stripe.com/dRm14pgIY9WjetUa5s9ws0e',
+    100:    'https://donate.stripe.com/4gM28t3Wc5G33Pg3H49ws0g',
+    250:    'https://donate.stripe.com/00w3cxfEUgkHgC2gtQ9ws0k',
+    500:    'https://donate.stripe.com/3cIaEZcsIgkH0D4gtQ9ws0m',
+    1000:   'https://donate.stripe.com/cNi7sN0K0d8vfxYfpM9ws0o',
+    custom: 'https://donate.stripe.com/28EaEZ9gw8Sf5Xo4L89ws0i'
   },
   monthly: {
-    10:     'https://buy.stripe.com/REPLACE_MONTHLY_10',
-    25:     'https://buy.stripe.com/REPLACE_MONTHLY_25',
-    50:     'https://buy.stripe.com/REPLACE_MONTHLY_50',
-    100:    'https://buy.stripe.com/REPLACE_MONTHLY_100',
-    custom: 'https://buy.stripe.com/REPLACE_MONTHLY_CUSTOM'
+    10:     'https://donate.stripe.com/14AeVf1O45G33PgdhE9ws0b',
+    25:     'https://donate.stripe.com/00w8wR2S83xV5Xo6Tg9ws0d',
+    50:     'https://donate.stripe.com/14AdRbgIYc4rdpQcdA9ws0f',
+    100:    'https://donate.stripe.com/28E3cx50g6K71H8elI9ws0h',
+    250:    'https://donate.stripe.com/00w14p1O47ObfxYcdA9ws0l',
+    500:    'https://donate.stripe.com/28E3cx3Wc7ObetU2D09ws0n',
+    1000:   'https://donate.stripe.com/bJe28tcsIgkHclM5Pc9ws0p',
+    custom: 'https://donate.stripe.com/7sY14pcsIc4r99AcdA9ws0j'
   }
 };
 
@@ -93,9 +100,13 @@ const customWrap    = document.getElementById('custom-wrap');
 const customInput   = document.getElementById('custom-amount');
 const impactText    = document.getElementById('impact-text');
 const donateAction  = document.getElementById('donate-action');
-const impactIcons   = { 10: '📚', 25: '🦟', 50: '📖', 100: '🎓' };
+const impactIcons   = { 10: '📚', 25: '🦟', 50: '📖', 100: '🎓', 250: '🎓', 500: '🏫', 1000: '🌟' };
 
 let selectedAmount = 25;
+let isCustomAmount = false;
+
+/* Show custom input always */
+customWrap.classList.add('show');
 
 function updateDonateBtn(amount) {
   donateAction.textContent = `Donate $${amount} Now`;
@@ -115,42 +126,35 @@ amountBtns.forEach(btn => {
   btn.addEventListener('click', () => {
     amountBtns.forEach(b => b.classList.remove('active'));
     btn.classList.add('active');
-
-    if (btn.dataset.amount === 'other') {
-      customWrap.classList.add('show');
-      customInput.focus();
-      const val = parseInt(customInput.value, 10);
-      if (val > 0) {
-        selectedAmount = val;
-        updateDonateBtn(val);
-      } else {
-        donateAction.textContent = 'Donate Now';
-      }
-      impactText.textContent = 'Your gift goes directly to scholarships and malaria prevention.';
-      btn.closest('.donation-widget').querySelector('.impact-icon').textContent = '💚';
-    } else {
-      customWrap.classList.remove('show');
-      selectedAmount = parseInt(btn.dataset.amount, 10);
-      updateDonateBtn(selectedAmount);
-      updateImpact(btn);
-    }
+    isCustomAmount = false;
+    customInput.value = '';
+    selectedAmount = parseInt(btn.dataset.amount, 10);
+    updateDonateBtn(selectedAmount);
+    updateImpact(btn);
   });
 });
 
 customInput.addEventListener('input', () => {
-  const val = parseInt(customInput.value, 10);
+  const val = parseFloat(customInput.value);
   if (val > 0) {
+    isCustomAmount = true;
     selectedAmount = val;
+    amountBtns.forEach(b => b.classList.remove('active'));
     updateDonateBtn(val);
+    impactText.textContent = 'Your gift goes directly to scholarships and malaria prevention.';
+    document.querySelector('.impact-icon').textContent = '💚';
   } else {
-    donateAction.textContent = 'Donate Now';
+    isCustomAmount = false;
+    // restore default $25 selection
+    const defaultBtn = document.querySelector('[data-amount="25"]');
+    if (defaultBtn) { defaultBtn.classList.add('active'); selectedAmount = 25; updateDonateBtn(25); updateImpact(defaultBtn); }
   }
 });
 
 /* Open Stripe Payment Link on donate button click */
 donateAction.addEventListener('click', () => {
   const links = STRIPE_LINKS[donationType];
-  const url   = links[selectedAmount] || links.custom;
+  const url = isCustomAmount ? links.custom : links[selectedAmount];
   window.open(url, '_blank', 'noopener,noreferrer');
 });
 
