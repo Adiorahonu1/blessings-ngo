@@ -1,0 +1,352 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Thank You — LCERMF</title>
+  <meta name="description" content="Thank you for your generous donation to Life Changers Education, Research & Medical Foundation." />
+
+  <!-- Fonts -->
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Playfair+Display:ital,wght@0,600;0,700;1,600&family=Inter:wght@400;500;600;700&display=swap" rel="stylesheet" />
+
+  <!-- canvas-confetti CDN -->
+  <script src="https://cdn.jsdelivr.net/npm/canvas-confetti@1.9.3/dist/confetti.browser.min.js"></script>
+
+  <style>
+    :root {
+      --green-dark:   #0f2e1e;
+      --green-mid:    #1a4d32;
+      --green-accent: #2d7a4f;
+      --green-light:  #3ea066;
+      --gold:         #c8960c;
+      --gold-light:   #f0c040;
+      --navy:         #0d1b2a;
+      --cream:        #f7f2e8;
+      --cream-mid:    #ede6d4;
+      --white:        #ffffff;
+      --text-dark:    #1a1a1a;
+      --text-mid:     #3a3a3a;
+      --font-display: 'Playfair Display', Georgia, serif;
+      --font-body:    'Inter', system-ui, sans-serif;
+    }
+
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    html, body {
+      height: 100%;
+      font-family: var(--font-body);
+      background: var(--green-dark);
+      color: var(--white);
+      -webkit-font-smoothing: antialiased;
+      overflow-x: hidden;
+    }
+
+    /* ── Confetti canvas ── */
+    #confetti-canvas {
+      position: fixed;
+      inset: 0;
+      width: 100%;
+      height: 100%;
+      pointer-events: none;
+      z-index: 0;
+    }
+
+    /* ── Page layout ── */
+    .page {
+      position: relative;
+      z-index: 1;
+      min-height: 100vh;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: center;
+      padding: 40px 20px;
+    }
+
+    /* ── Card ── */
+    .card {
+      background: rgba(255, 255, 255, 0.04);
+      border: 1px solid rgba(200, 150, 12, 0.25);
+      border-radius: 20px;
+      padding: 56px 48px;
+      max-width: 640px;
+      width: 100%;
+      text-align: center;
+      backdrop-filter: blur(12px);
+      -webkit-backdrop-filter: blur(12px);
+      box-shadow: 0 24px 80px rgba(0, 0, 0, 0.4);
+      animation: cardIn 0.7s cubic-bezier(0.22, 1, 0.36, 1) both;
+    }
+
+    @keyframes cardIn {
+      from { opacity: 0; transform: translateY(32px) scale(0.96); }
+      to   { opacity: 1; transform: translateY(0)     scale(1);    }
+    }
+
+    /* ── Heart pulse ── */
+    .heart {
+      font-size: 3.6rem;
+      display: inline-block;
+      animation: heartbeat 1.4s ease-in-out 0.4s infinite;
+      margin-bottom: 24px;
+    }
+
+    @keyframes heartbeat {
+      0%, 100% { transform: scale(1); }
+      14%       { transform: scale(1.18); }
+      28%       { transform: scale(1); }
+      42%       { transform: scale(1.12); }
+      56%       { transform: scale(1); }
+    }
+
+    /* ── Heading ── */
+    .heading {
+      font-family: var(--font-display);
+      font-size: clamp(2rem, 6vw, 3.2rem);
+      font-weight: 700;
+      color: var(--gold-light);
+      line-height: 1.15;
+      margin-bottom: 12px;
+      animation: fadeUp 0.6s 0.3s both;
+    }
+
+    .subheading {
+      font-size: 1.1rem;
+      color: rgba(240, 237, 230, 0.8);
+      line-height: 1.65;
+      margin-bottom: 40px;
+      animation: fadeUp 0.6s 0.45s both;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(16px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Receipt box ── */
+    .receipt {
+      background: rgba(15, 46, 30, 0.6);
+      border: 1px solid rgba(200, 150, 12, 0.2);
+      border-radius: 12px;
+      padding: 28px 32px;
+      margin-bottom: 36px;
+      text-align: left;
+      animation: fadeUp 0.6s 0.6s both;
+    }
+
+    .receipt-label {
+      font-size: 0.68rem;
+      font-weight: 700;
+      letter-spacing: 3px;
+      text-transform: uppercase;
+      color: var(--gold);
+      margin-bottom: 20px;
+    }
+
+    .receipt-row {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      padding: 8px 0;
+      border-bottom: 1px solid rgba(200, 150, 12, 0.1);
+      font-size: 0.88rem;
+    }
+
+    .receipt-row:last-child { border-bottom: none; }
+
+    .receipt-row .key   { color: rgba(240, 237, 230, 0.55); }
+    .receipt-row .val   { color: var(--white); font-weight: 600; }
+    .receipt-row .val.amount { color: #4ade80; font-size: 1rem; }
+
+    .receipt-note {
+      font-size: 0.72rem;
+      color: rgba(240, 237, 230, 0.4);
+      margin-top: 16px;
+      line-height: 1.55;
+    }
+
+    /* ── Impact statement ── */
+    .impact {
+      background: linear-gradient(135deg, rgba(45,122,79,0.25), rgba(200,150,12,0.1));
+      border: 1px solid rgba(45,122,79,0.35);
+      border-radius: 10px;
+      padding: 20px 24px;
+      font-size: 0.92rem;
+      color: rgba(240, 237, 230, 0.85);
+      line-height: 1.65;
+      margin-bottom: 36px;
+      font-style: italic;
+      animation: fadeUp 0.6s 0.75s both;
+    }
+
+    /* ── CTA button ── */
+    .btn-home {
+      display: inline-block;
+      background: linear-gradient(135deg, var(--green-accent), var(--green-light));
+      color: var(--white);
+      font-family: var(--font-body);
+      font-size: 0.95rem;
+      font-weight: 600;
+      padding: 14px 36px;
+      border-radius: 50px;
+      border: none;
+      cursor: pointer;
+      text-decoration: none;
+      transition: transform 0.2s, box-shadow 0.2s;
+      box-shadow: 0 4px 20px rgba(45, 122, 79, 0.35);
+      animation: fadeUp 0.6s 0.9s both;
+    }
+
+    .btn-home:hover {
+      transform: translateY(-2px);
+      box-shadow: 0 8px 32px rgba(45, 122, 79, 0.5);
+    }
+
+    /* ── Logo ── */
+    .logo-wrap {
+      margin-bottom: 36px;
+      animation: fadeUp 0.5s 0.1s both;
+    }
+
+    .logo-wrap img {
+      height: 54px;
+      width: auto;
+      border-radius: 8px;
+      margin: 0 auto;
+    }
+
+    /* ── Share nudge ── */
+    .share-nudge {
+      margin-top: 24px;
+      font-size: 0.8rem;
+      color: rgba(240, 237, 230, 0.4);
+      animation: fadeUp 0.6s 1.05s both;
+    }
+
+    /* ── Responsive ── */
+    @media (max-width: 520px) {
+      .card { padding: 36px 24px; }
+      .receipt { padding: 20px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Confetti fires into this canvas -->
+  <canvas id="confetti-canvas"></canvas>
+
+  <div class="page">
+    <div class="card">
+
+      <!-- Logo -->
+      <div class="logo-wrap">
+        <img src="img/LCERMF LOGO.jpeg" alt="LCERMF Logo" />
+      </div>
+
+      <!-- Heart -->
+      <div class="heart">💚</div>
+
+      <!-- Heading -->
+      <h1 class="heading">Thank You!</h1>
+      <p class="subheading">
+        Your generosity is changing lives in Nigeria.<br />
+        Every dollar goes directly to scholarships<br />and malaria prevention.
+      </p>
+
+      <!-- Tax receipt box -->
+      <div class="receipt">
+        <p class="receipt-label">Official Tax Receipt &mdash; 501(c)(3)</p>
+
+        <div class="receipt-row">
+          <span class="key">Organization</span>
+          <span class="val">Life Changers Education, Research &amp; Medical Foundation</span>
+        </div>
+        <div class="receipt-row">
+          <span class="key">EIN</span>
+          <span class="val">93-4687547</span>
+        </div>
+        <div class="receipt-row">
+          <span class="key">Website</span>
+          <span class="val">lifechangersfs.com</span>
+        </div>
+        <div class="receipt-row" id="row-amount" style="display:none">
+          <span class="key">Donation</span>
+          <span class="val amount" id="receipt-amount"></span>
+        </div>
+
+        <p class="receipt-note">
+          No goods or services were provided in exchange for this contribution.<br />
+          A detailed receipt has been emailed to you. Please retain this page for your records.
+        </p>
+      </div>
+
+      <!-- Impact -->
+      <div class="impact">
+        "Because of supporters like you, a Nigerian student will attend university, and a family will sleep safely under a mosquito net tonight."
+      </div>
+
+      <!-- Back home -->
+      <a href="index.html" class="btn-home">Return to Homepage</a>
+
+      <p class="share-nudge">Questions? Contact us at admin@lifechangersfs.com</p>
+
+    </div>
+  </div>
+
+  <script>
+    /* ── Confetti burst — mirrors the Remotion SuccessConfetti component ── */
+    (function () {
+      const canvas = document.getElementById('confetti-canvas');
+      const myConfetti = confetti.create(canvas, { resize: true, useWorker: true });
+
+      const colors = ['#38bdf8', '#22c55e', '#f97316', '#facc15', '#a855f7', '#f0c040', '#3ea066'];
+
+      function burst(originX, originY, count, spread) {
+        myConfetti({
+          particleCount: count,
+          spread: spread,
+          origin: { x: originX, y: originY },
+          colors: colors,
+          gravity: 0.55,
+          scalar: 1.1,
+          ticks: 280,
+          startVelocity: 28,
+          shapes: ['circle', 'square'],
+        });
+      }
+
+      /* Initial big center burst (matches SuccessConfetti originX=0.5, originY=0.5) */
+      function launchCelebration() {
+        burst(0.5, 0.5, 72, 360);   /* full circle burst from center */
+
+        /* Side cannons — extra flair */
+        setTimeout(() => { burst(0.2, 0.6, 35, 55); }, 350);
+        setTimeout(() => { burst(0.8, 0.6, 35, 55); }, 500);
+        setTimeout(() => { burst(0.5, 0.4, 45, 200); }, 800);
+      }
+
+      /* Fire on load, then again after 4 s for anyone who lingers */
+      window.addEventListener('load', () => {
+        setTimeout(launchCelebration, 300);
+        setTimeout(launchCelebration, 4200);
+      });
+
+      /* ── Read URL params (Stripe can pass ?amount=25&type=once) ── */
+      const params = new URLSearchParams(window.location.search);
+      const amount = params.get('amount');
+      const type   = params.get('type');
+
+      if (amount) {
+        const label = type === 'monthly'
+          ? `$${amount} / month (Recurring)`
+          : `$${parseFloat(amount).toFixed(2)} (One-Time)`;
+        document.getElementById('receipt-amount').textContent = label;
+        document.getElementById('row-amount').style.display = 'flex';
+      }
+    })();
+  </script>
+
+</body>
+</html>
